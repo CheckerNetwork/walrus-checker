@@ -29,3 +29,17 @@ test('measure failed retrieval', async () => {
     'https://example.com/v1/blobs/blobId'
   ])
 })
+
+test('measure error on retrieval', async () => {
+  const requests = []
+  const mockFetch = async (url, allOpts) => {
+    requests.push(url)
+    throw new Error('FETCH ERROR')
+  }
+
+  const result = await measure('https://example.com', 'blobId', mockFetch)
+  assertEquals(result, { retrievalSucceeded: false })
+  assertEquals(requests, [
+    'https://example.com/v1/blobs/blobId'
+  ])
+})
