@@ -4,7 +4,7 @@ import { submit } from '../lib/submit-measurement.js'
 
 test('submit measurement succeeds', async () => {
   const requests = []
-  const fetch = async (url, allOpts) => {
+  const mockFetch = async (url, allOpts) => {
     const { signal, ...opts } = allOpts
     requests.push({ url, opts })
 
@@ -16,7 +16,7 @@ test('submit measurement succeeds', async () => {
   }
 
   const measurement = { retrievalSucceeded: true }
-  await submit(measurement, fetch)
+  await submit(measurement, mockFetch)
   assertEquals(requests.length, 1)
   assertEquals(requests, [
     {
@@ -44,7 +44,8 @@ test('submit measurements fails', async () => {
   }
 
   const measurement = { retrievalSucceeded: true }
-  await assertRejects(async () => await submit(measurement, fetch), 'Failed to submit measurement (status=500)')
+  const err = await assertRejects(async () => await submit(measurement, fetch))
+  assertEquals(err.message, 'Failed to submit measurement (500): Internal Server Error')
   assertEquals(requests.length, 1)
   assertEquals(requests, [
     {
