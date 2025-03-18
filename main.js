@@ -3,8 +3,18 @@
 import { DEFAULT_AGGREGATORS } from './lib/nodes.js'
 import { getRecentBlobs } from './lib/blobs.js'
 import { measure } from './lib/measure.js'
-import { pickRandomItem } from './lib/random.js'
 import { MEASUREMENT_DELAY } from './lib/constants.js'
+
+/**
+ * Picks a random item from an array.
+ *
+ * @template {T}
+ * @param {T[]} arr
+ * @returns {T}
+ */
+const pickRandomItem = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
 
 while (true) {
   try {
