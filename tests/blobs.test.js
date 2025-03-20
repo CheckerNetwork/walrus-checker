@@ -17,15 +17,21 @@ test('returns certified blobs', async () => {
           content: [
             {
               blobIdBase64: 'blobId',
-              status: 'Certified'
+              status: 'Certified',
+              startEpoch: 10,
+              endEpoch: 20
             },
             {
               blobIdBase64: 'blobId2',
-              status: 'Pending'
+              status: 'Pending',
+              startEpoch: 10,
+              endEpoch: 20
             },
             {
               blobIdBase64: 'blobId3',
-              status: 'Certified'
+              status: 'Certified',
+              startEpoch: 15,
+              endEpoch: 20
             }
           ]
         })
@@ -40,23 +46,36 @@ test('returns certified blobs', async () => {
         content: [
           {
             blobIdBase64: 'blobId4',
-            status: 'Pending'
+            status: 'Pending',
+            startEpoch: 10,
+            endEpoch: 20
           },
           {
             blobIdBase64: 'blobId5',
-            status: 'Pending'
+            status: 'Pending',
+            startEpoch: 10,
+            endEpoch: 20
           },
           {
             blobIdBase64: 'blobId6',
-            status: 'Certified'
+            status: 'Certified',
+            startEpoch: 10,
+            endEpoch: 20
+          },
+          {
+            blobIdBase64: 'blobId7',
+            status: 'Certified',
+            startEpoch: 9,
+            endEpoch: 12
           }
         ]
       })
     }
   }
 
-  const result = await getBlobs(mockFetch)
-  assertEquals(result, ['blobId', 'blobId3', 'blobId6'])
+  const activeEpoch = 13
+  const result = await getBlobs(activeEpoch, mockFetch)
+  assertEquals(result, ['blobId', 'blobId6'])
   assertEquals(requests, [
     'https://walruscan.com/api/walscan-backend/testnet/api/blobs?page=0&sortBy=TIMESTAMP&orderBy=DESC&searchStr=&size=20',
     'https://walruscan.com/api/walscan-backend/testnet/api/blobs?page=1&sortBy=TIMESTAMP&orderBy=DESC&searchStr=&size=20'
