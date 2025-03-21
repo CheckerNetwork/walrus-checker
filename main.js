@@ -1,24 +1,34 @@
 /* global Zinnia */
 
 import { DEFAULT_AGGREGATORS } from './lib/nodes.js'
-import { getRecentBlobs } from './lib/blobs.js'
+import { getBlobs } from './lib/blobs.js'
 import { measure } from './lib/measure.js'
-import { MEASUREMENT_DELAY } from './lib/constants.js'
+import { MEASUREMENT_DELAY, SUI_NETWORK, WALRUS_STATE_OBJECT_ID } from './lib/constants.js'
+import { pickRandomItem } from './lib/random.js'
+import { getFullnodeUrl, SuiClient } from './vendor/deno-deps.js'
+
+const suiRpcUrl = getFullnodeUrl(SUI_NETWORK)
+const suiClient = new SuiClient({ url: suiRpcUrl })
 
 /**
- * Picks a random item from an array.
+ * Fetches the active Walrus epoch
  *
- * @template {T}
- * @param {T[]} arr
- * @returns {T}
+ * @param {SuiClient} client SUI client
+ * @returns {Promise<number>} Current Walrus epoch
  */
-const pickRandomItem = (arr) => {
-  return arr[Math.floor(Math.random() * arr.length)]
+const getActiveWalrusEpoch = async (client) => {
+  const object = await client.getObject({
+    id: WALRUS_STATE_OBJECT_ID,
+    options: { showContent: true }
+  })
+
+  return object.data.content.fields.value.fields.epoch
 }
 
 while (true) {
   try {
-    const blobs = await getRecentBlobs()
+    const activeEpoch = await getActiveWalrusEpoch(suiClient)
+    const blobs = await getBlobs(activeEpoch)
     console.log(`Found ${blobs.length} blobs`)
     const measurement = await measure(
       pickRandomItem(DEFAULT_AGGREGATORS),
