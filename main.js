@@ -3,7 +3,7 @@
 import { DEFAULT_AGGREGATORS } from './lib/nodes.js'
 import { getBlobs } from './lib/blobs.js'
 import { measure } from './lib/measure.js'
-import { MEASUREMENT_DELAY, SUI_NETWORK, WALRUS_OBJECT_ID } from './lib/constants.js'
+import { MEASUREMENT_DELAY, SUI_NETWORK, WALRUS_STATE_OBJECT_ID } from './lib/constants.js'
 import { pickRandomItem } from './lib/random.js'
 import { getFullnodeUrl, SuiClient } from './vendor/deno-deps.js'
 
@@ -18,7 +18,7 @@ const suiClient = new SuiClient({ url: suiRpcUrl })
  */
 const getActiveWalrusEpoch = async (client) => {
   const object = await client.getObject({
-    id: WALRUS_OBJECT_ID,
+    id: WALRUS_STATE_OBJECT_ID,
     options: { showContent: true }
   })
 
