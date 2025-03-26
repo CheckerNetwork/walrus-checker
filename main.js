@@ -6,6 +6,7 @@ import { measure } from './lib/measure.js'
 import { MEASUREMENT_DELAY, SUI_NETWORK, WALRUS_STATE_OBJECT_ID } from './lib/constants.js'
 import { pickRandomItem } from './lib/random.js'
 import { getFullnodeUrl, SuiClient } from './vendor/deno-deps.js'
+import { submit } from './lib/submit-measurement.js'
 
 const suiRpcUrl = getFullnodeUrl(SUI_NETWORK)
 const suiClient = new SuiClient({ url: suiRpcUrl })
@@ -35,7 +36,7 @@ while (true) {
       pickRandomItem(blobs)
     )
     console.log('measurement:', measurement)
-    // TODO: Submit measurement to API
+    await submit(measurement)
     Zinnia.jobCompleted()
   } catch (err) {
     console.error('Error:', err)
