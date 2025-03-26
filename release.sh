@@ -14,4 +14,4 @@ git commit -m v"$VERSION" --allow-empty
 git tag -s v"$VERSION" -m v"$VERSION"
 git push
 git push origin v"$VERSION"
-open https://github.com/checkernetwork/arweave-checker/releases/new?tag=v"$VERSION"
+open https://github.com/checkernetwork/walrus-checker/releases/new?tag=v"$VERSION"
