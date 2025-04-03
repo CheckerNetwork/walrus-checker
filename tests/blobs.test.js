@@ -77,7 +77,7 @@ test('returns certified blobs', async () => {
   const result = await getBlobs(activeEpoch, mockFetch)
   assertEquals(result, ['blobId', 'blobId6'])
   assertEquals(requests, [
-    'https://walruscan.com/api/walscan-backend/testnet/api/blobs?page=0&sortBy=TIMESTAMP&orderBy=DESC&searchStr=&size=20',
-    'https://walruscan.com/api/walscan-backend/testnet/api/blobs?page=1&sortBy=TIMESTAMP&orderBy=DESC&searchStr=&size=20'
+    'https://walruscan.com/api/walscan-backend/mainnet/api/blobs?page=0&sortBy=TIMESTAMP&orderBy=DESC&searchStr=&size=20',
+    'https://walruscan.com/api/walscan-backend/mainnet/api/blobs?page=1&sortBy=TIMESTAMP&orderBy=DESC&searchStr=&size=20'
   ])
 })
