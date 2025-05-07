@@ -17,7 +17,7 @@ jobs:
           w3name-private-key: ${{ secrets.W3NAME_PRIVATE_KEY }}
           w3name-revision: ${{ secrets.W3NAME_REVISION }}
       - if: failure()
-        uses: slackapi/slack-github-action@v2.0.0
+        uses: slackapi/slack-github-action@v2.1.0
         with:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
